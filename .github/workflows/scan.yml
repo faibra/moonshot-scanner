@@ -2,23 +2,26 @@ name: Daily Moonshot Scan
 
 on:
   schedule:
-    - cron: '30 13 * * 1-5'  # 9:30 AM EST = 13:30 UTC, Mon-Fri
-  workflow_dispatch:           # lets you run it manually too
+    - cron: '30 13 * * 1-5'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v4
+
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
+
       - name: Install dependencies
         run: pip install requests yfinance beautifulsoup4
-      
+
       - name: Run scanner
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
